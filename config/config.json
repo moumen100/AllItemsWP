@@ -1,0 +1,19 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "bbs-cpa-all-items-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/bbsCpaAllItems/BbsCpaAllItemsWebPart.js",
+          "manifest": "./src/webparts/bbsCpaAllItems/BbsCpaAllItemsWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "BbsCpaAllItemsWebPartStrings": "lib/webparts/bbsCpaAllItems/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js"
+  }
+}

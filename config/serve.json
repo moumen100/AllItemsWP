@@ -1,0 +1,45 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "http://orgaplums/SitePages/ProductList.aspx",
+      "customActions": {
+        "ada4bf2b-a6c1-4074-a273-9d220c815e11": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible."
+          }
+        }
+      }
+    },
+    "pageCommandSet": {
+      "pageUrl": "http://mim:45895/sites/Site_CPA/SitePages/Forms/ByAuthor.aspx",
+      "customActions": {
+        "ada4bf2b-a6c1-4074-a273-9d220c815e11": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible."
+          }
+        }
+      }
+    },
+    "pageCommandSetONl": {
+      "pageUrl": "http://mim:45895/sites/Site_CPA/SitePages/Forms/ByAuthor.aspx",
+      "customActions": {
+        "ada4bf2b-a6c1-4074-a273-9d220c815e11": {
+          "location": "ClientSideExtension.ListViewCommandSet.CommandBar",
+          "properties": {
+            "sampleTextOne": "One item is selected in the list",
+            "sampleTextTwo": "This command is always visible."
+          }
+        }
+      }
+    }
+  }
+}
+
+

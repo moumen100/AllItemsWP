@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "bbscpa-all-items-client-side-solution",
+    "id": "2e4ee957-5767-4e6e-a8f6-cc041a94c1da",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true
+  },
+  "paths": {
+    "zippedPackage": "solution/bbscpa-all-items.sppkg"
+  }
+}
