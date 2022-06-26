@@ -64,7 +64,7 @@ export default class BbsCpaAllItemsWebPart extends BaseClientSideWebPart<IBbsCpa
     let url =
       !this.properties.WebUrl || this.properties.WebUrl == ""
         ? this.context.pageContext.web.absoluteUrl
-        : await this.Helper.GetSites(this.properties.WebUrl);
+        : this.properties.WebUrl;
     return this.context.spHttpClient
       .get(
         url + `/_api/web/lists?$filter=BaseTemplate eq 100`,
@@ -76,13 +76,17 @@ export default class BbsCpaAllItemsWebPart extends BaseClientSideWebPart<IBbsCpa
   }
   public async getListItems(listId:string) : Promise< ISPListsItems> {
 
-    let url =  (!this.properties.WebUrl || this.properties.WebUrl=='' ) ? this.context.pageContext.web.absoluteUrl  : await this.Helper.GetSites(this.properties.WebUrl)
+    let url =  (!this.properties.WebUrl || this.properties.WebUrl=='' ) ? this.context.pageContext.web.absoluteUrl  : this.properties.WebUrl
   url = url+ "/_api/Web/Lists(@v0)/Items?&@v0=guid'" + this.properties.listId +"'"
     return this.context.spHttpClient.get(url, SPHttpClient.configurations.v1)
       .then((response: SPHttpClientResponse) => {
         return response.json();
       });
   }
+  // public async GetSites(url: string): Promise<string> {
+  //   const siteurl: string = await sp.site.getWebUrlFromPageUrl(url);
+  //   return siteurl;
+  // }
   protected async onPropertyPaneConfigurationStart() {
     this.lists = [];
     let listOfLists = await (await this._getListData()).value;
@@ -104,6 +108,7 @@ export default class BbsCpaAllItemsWebPart extends BaseClientSideWebPart<IBbsCpa
     this.context.statusRenderer.clearLoadingIndicator(this.domElement);
     this.render();
   }
+
   protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): Promise<void> {
     if (propertyPath == "WebUrl") {
       this.lists = [];
