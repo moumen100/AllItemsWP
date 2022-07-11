@@ -15,7 +15,8 @@ import {
   IDocumentCardPreviewProps,
   DocumentCardLocation,
   DocumentCardType,
-} from "office-ui-fabric-react/lib/DocumentCard";
+  SearchBox
+} from "office-ui-fabric-react";
 import { ImageFit } from "office-ui-fabric-react/lib/Image";
 import { ISize } from "office-ui-fabric-react/lib/Utilities";
 import { Link, Image, List } from "office-ui-fabric-react";
@@ -27,13 +28,14 @@ import { Label } from "office-ui-fabric-react/lib/Label";
 
 export default class BbsCpaWebpartOffreEmploi extends React.Component<
   IBbsCpaAllItemsProps,
-  { items: IAllItems[] }
+  { items: IAllItems[],searchQuery:string }
 > {
   constructor(props: IBbsCpaAllItemsProps) {
     super(props);
 
     this.state = {
       items: [],
+      searchQuery:""
     };
   }
 
@@ -106,24 +108,55 @@ export default class BbsCpaWebpartOffreEmploi extends React.Component<
     );
   };
   public render(): React.ReactElement<IBbsCpaAllItemsProps> {
+    const renderItems = () => {
+      if (this.state.items && this.state.items.length)
+        return this.state.items
+          .filter((item) => {
+            if (this.state.searchQuery.toLowerCase() === "") return item;
+            else if (
+              item.Titre.toLowerCase().indexOf(
+                this.state.searchQuery.toLowerCase()
+              ) > -1 ||
+              item.ShortDescription.toLowerCase().indexOf(
+                this.state.searchQuery.toLowerCase()
+              ) > -1
+            )
+              return item;
+          })
+          
+    };
     return (
       <div>
-        <h3 style={{ color: "#1482d9" }}>
-          <Link
-            href={this.props.SeeAllUrl}
-            target={"blank"}
-            className={styles.LinkTitleStyle}
-          >
-            {this.props.description}
-          </Link>
-        </h3>
+          <Label className={styles.LinkTitleStyle}>
+              {this.props.description}
+            </Label>
+        <div className={styles.container_block}>
+              <div className={styles.element1}>
+                <SearchBox
+                  placeholder="Rechercher ..."
+                  onEscape={(ev) => {
+                    //console.log("Custom onEscape Called");
+                  }}
+                  onClear={(ev) => {
+                    // console.log("Custom onClear Called");
+                  }}
+                  onChange={(newValue) =>
+                    this.setState({ searchQuery: newValue })
+                  }
+                  onSearch={(newValue) =>
+                    this.setState({ searchQuery: newValue })
+                  }
+                />
+
+                <br />
+              </div>
+              </div>
         <GridLayout
-          items={this.state.items}
-          onRenderGridItem={(item: any, finalSize: ISize, isCompact: boolean) =>
+          items={renderItems()}
+          onRenderGridItem={(item: IAllItems, finalSize: ISize, isCompact: boolean) =>
             this._onRenderGridItem(item, finalSize, isCompact)
           }
         />
-       
       </div>
     );
   }

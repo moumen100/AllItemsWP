@@ -73,13 +73,7 @@
   }
   
 }
-.LinkTitleStyle {
-  color:#1482d9 ;
 
-}
-.LinkTitleStyle:hover {
-  color:#5ba8e4 ;
-}
 .P-Title{
   @include ms-fontSize-l;
   @include ms-fontWeight-regular;
@@ -117,4 +111,18 @@
   align-items: center;
   justify-content: center;
 }
-
+.element1{
+  
+  width: 70%;
+}
+.element2{
+  margin-left: 1%;
+  width: 29%;
+}
+.container_block{
+  display: flex;
+}
+.LinkTitleStyle {
+  @include ms-font-xxl;
+  padding-bottom: 1em;
+}
