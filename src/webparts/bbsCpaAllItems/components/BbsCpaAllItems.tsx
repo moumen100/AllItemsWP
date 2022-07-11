@@ -3,10 +3,7 @@ import styles from "./BbsCpaAllItems.module.scss";
 import { IBbsCpaAllItemsProps } from "./IBbsCpaAllItemsProps";
 import { escape } from "@microsoft/sp-lodash-subset";
 import { GridLayout } from "@pnp/spfx-controls-react/lib/GridLayout";
-import {
-  ChoiceGroup,
-  IChoiceGroupOption,
-} from "office-ui-fabric-react/lib/ChoiceGroup";
+
 import {
   DocumentCard,
   DocumentCardActivity,
@@ -19,9 +16,7 @@ import {
 } from "office-ui-fabric-react";
 import { ImageFit } from "office-ui-fabric-react/lib/Image";
 import { ISize } from "office-ui-fabric-react/lib/Utilities";
-import { Link, Image, List } from "office-ui-fabric-react";
 import { IAllItems } from "../Models/IAllItems";
-import SPHelper from "../Helpers/SPHelpers";
 
 import { DefaultButton, IButtonProps } from "office-ui-fabric-react/lib/Button";
 import { Label } from "office-ui-fabric-react/lib/Label";
