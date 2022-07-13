@@ -126,3 +126,30 @@
   @include ms-font-xxl;
   padding-bottom: 1em;
 }
+.ProductTitle {
+  @include ms-fontSize-l;
+  font-weight: 600;
+  padding: 0px 16px;
+  margin:8px 0 ; 
+
+  overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 1;
+line-clamp: 1;
+-webkit-box-orient: vertical; 
+}
+.P-Description {
+  @include ms-font-s-plus;
+  @include  ms-fontWeight-semilight;
+  margin-left: 15px;
+  margin-right: 15px;
+  text-align: justify;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  height: 51px;
+}

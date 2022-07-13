@@ -17,7 +17,7 @@ import {
 import { ImageFit } from "office-ui-fabric-react/lib/Image";
 import { ISize } from "office-ui-fabric-react/lib/Utilities";
 import { IAllItems } from "../Models/IAllItems";
-
+import SPHelper from "../Helpers/SPHelpers";
 import { DefaultButton, IButtonProps } from "office-ui-fabric-react/lib/Button";
 import { Label } from "office-ui-fabric-react/lib/Label";
 
@@ -37,25 +37,28 @@ export default class BbsCpaWebpartOffreEmploi extends React.Component<
   
 
   componentDidUpdate(
-    prevProps: Readonly<IBbsCpaAllItemsProps>
+    prevProps: Readonly<IBbsCpaAllItemsProps>,
+   prevState: Readonly<{ items: IAllItems[] }>,
+    prevContext: any
   ): void {
-    if (
-      prevProps != this.props 
-    ) {
-      this.setState({
-        items:this.props.listitem
+        let SpHelper = new SPHelper(this.props.Context,this.props.WebUrl);
+
+    if (prevProps.listId !== this.props.listId ) 
+    {
+      SpHelper.getListItems(this.props.listId).then(result=>{
+        this.setState({
+          items:result.value
+        })
       })
     }
   }
 
-  componentWillMount(): void {
-    this.setState({
-      items:this.props.listitem
-    })  }
-
   componentDidMount() {
-    this.setState({
-      items:this.props.listitem
+    let SpHelper = new SPHelper(this.props.Context,this.props.WebUrl);
+    SpHelper.getListItems(this.props.listId).then(result=>{
+      this.setState({
+        items:result.value
+      })
     })
   }
 
@@ -79,11 +82,12 @@ export default class BbsCpaWebpartOffreEmploi extends React.Component<
           type={isCompact ? DocumentCardType.compact : DocumentCardType.normal}
         >
           <DocumentCardPreview {...previewProps} />
-          <DocumentCardTitle title={items.Titre} shouldTruncate={true} />
+          <label className={styles.ProductTitle}>{items.Titre}
+             </label> 
 
           {/* {!isCompact && <DocumentCardLocation location={items.ShortDescription} />} */}
           <p className={styles["P-Description"]}>
-            {items.ShortDescription.substring(0, 160) + "... "}{" "}
+            {items.ShortDescription}
           </p>
         
           <div className={styles.bouttonCenter}>
@@ -103,9 +107,10 @@ export default class BbsCpaWebpartOffreEmploi extends React.Component<
     );
   };
   public render(): React.ReactElement<IBbsCpaAllItemsProps> {
+    const ListItems = this.state.items
     const renderItems = () => {
-      if (this.state.items && this.state.items.length)
-        return this.state.items
+      if (ListItems && ListItems.length)
+        return ListItems
           .filter((item) => {
             if (this.state.searchQuery.toLowerCase() === "") return item;
             else if (
@@ -122,37 +127,47 @@ export default class BbsCpaWebpartOffreEmploi extends React.Component<
     };
     return (
       <div>
-          <Label className={styles.LinkTitleStyle}>
-              {this.props.description}
-            </Label>
-        <div className={styles.container_block}>
-              <div className={styles.element1}>
-                <SearchBox
-                  placeholder="Rechercher ..."
-                  onEscape={(ev) => {
-                    //console.log("Custom onEscape Called");
-                  }}
-                  onClear={(ev) => {
-                    // console.log("Custom onClear Called");
-                  }}
-                  onChange={(newValue) =>
-                    this.setState({ searchQuery: newValue })
-                  }
-                  onSearch={(newValue) =>
-                    this.setState({ searchQuery: newValue })
-                  }
-                />
+         {ListItems ? (<div>
+        
+        <Label className={styles.LinkTitleStyle}>
+            {this.props.description}
+          </Label>
+      <div className={styles.container_block}>
+            <div className={styles.element1}>
+              <SearchBox
+                placeholder="Rechercher ..."
+                onEscape={(ev) => {
+                  //console.log("Custom onEscape Called");
+                }}
+                onClear={(ev) => {
+                  // console.log("Custom onClear Called");
+                }}
+                onChange={(newValue) =>
+                  this.setState({ searchQuery: newValue })
+                }
+                onSearch={(newValue) =>
+                  this.setState({ searchQuery: newValue })
+                }
+              />
 
-                <br />
-              </div>
-              </div>
-        <GridLayout
-          items={renderItems()}
-          onRenderGridItem={(item: IAllItems, finalSize: ISize, isCompact: boolean) =>
-            this._onRenderGridItem(item, finalSize, isCompact)
-          }
-        />
+              <br />
+            </div>
+            </div>
+      <GridLayout
+        items={renderItems()}
+        onRenderGridItem={(item: IAllItems, finalSize: ISize, isCompact: boolean) =>
+          this._onRenderGridItem(item, finalSize, isCompact)
+        }
+      />
+    </div>) : (
+          <p>
+            Aucune donnée n'est disponible, veuillez alimenter votre sources de
+            données
+          </p>
+        ) }
       </div>
+     
+      
     );
   }
   private _alertClicked(items: IAllItems): void {
