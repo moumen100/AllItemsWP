@@ -168,7 +168,7 @@ export default class BbsCpaAllItemsWebPart extends BaseClientSideWebPart<IBbsCpa
 
                 PropertyPaneTextField("description", {
                   label: "Titre",
-                  value:"Nos Produits" 
+                  value:"Tout les produits" 
                 })
               ]
             }
