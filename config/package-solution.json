@@ -8,6 +8,6 @@
     "skipFeatureDeployment": true
   },
   "paths": {
-    "zippedPackage": "solution/bbscpa-all-items.sppkg"
+    "zippedPackage": "solution/pipeline-demo.sppkg"
   }
 }
