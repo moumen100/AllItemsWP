@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { Version } from '@microsoft/sp-core-library';
 import {
   BaseClientSideWebPart,
   IPropertyPaneConfiguration,
@@ -165,12 +164,11 @@ export default class BbsCpaAllItemsWebPart extends BaseClientSideWebPart<IBbsCpa
                   selectedKey: this.properties.listId,
                   disabled: this.islistdropdowndisabled,
                 
-                  
                 }),
 
                 PropertyPaneTextField("description", {
                   label: "Titre",
-                  value:"Tout Les Produits"
+                  value:"Tout Les Produits" 
                 })
               ]
             }
