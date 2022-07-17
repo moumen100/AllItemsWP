@@ -19,6 +19,7 @@
     "title": { "default": "BBS_CPA_AllProduct" },
     "description": { "default": "BBS_CPA_AllItems description" },
     "officeFabricIconFontName": "Page",
+    "iconImageUrl": "https://intranettest.cpa-bank.dz/Images%20CPA/MicrosoftTeams-image%20(5).png",
     "properties": {
       "description": "BBS_CPA_AllProduct"
     }
