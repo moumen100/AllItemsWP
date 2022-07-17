@@ -155,7 +155,6 @@ export default class BbsCpaAllItemsWebPart extends BaseClientSideWebPart<IBbsCpa
               groupFields: [
                 PropertyPaneTextField("WebUrl", {
                   label: "Collection de site",
-                  value:this.context.pageContext.web.absoluteUrl
                 }),
 
                 PropertyPaneDropdown("listId", {
@@ -163,7 +162,6 @@ export default class BbsCpaAllItemsWebPart extends BaseClientSideWebPart<IBbsCpa
                   options: [...this.lists],
                   selectedKey: this.properties.listId,
                   disabled: this.islistdropdowndisabled,
-                
                 }),
 
                 PropertyPaneTextField("description", {
