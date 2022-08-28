@@ -19,8 +19,9 @@ export default class SPHelper {
   }
   // liste des listes de sharepoint
   public _getListData(): Promise<ISPLists> {
-    let url =
-      this.context.pageContext.web.absoluteUrl +
+    let url =  (!this.WebUrl || this.WebUrl=='' ) ? this.context.pageContext.web.absoluteUrl  : this.WebUrl
+
+     url +=
       `/_api/web/lists?$filter=BaseTemplate eq 100`;
     return this.context.spHttpClient
       .get(url, SPHttpClient.configurations.v1)
@@ -37,7 +38,7 @@ export default class SPHelper {
   public async getListItems(listId:string) : Promise< ISPListsItems> {
 
     let url =  (!this.WebUrl || this.WebUrl=='' ) ? this.context.pageContext.web.absoluteUrl  : await this.WebUrl
-  url = url+ "/_api/Web/Lists(@v0)/Items?&@v0=guid'" + listId +"'"
+  url += "/_api/Web/Lists(@v0)/Items?&@v0=guid'" + listId +"'"
     return this.context.spHttpClient.get(url, SPHttpClient.configurations.v1)
       .then((response: SPHttpClientResponse) => {
         return response.json();

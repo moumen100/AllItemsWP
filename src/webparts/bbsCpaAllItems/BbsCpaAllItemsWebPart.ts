@@ -13,8 +13,6 @@ import { IBbsCpaAllItemsProps } from './components/IBbsCpaAllItemsProps';
 import { IAllItems } from './Models/IAllItems';
 import SPHelper from './Helpers/SPHelpers';
 import { sp } from '@pnp/sp'; 
-import {ISPListsItems, ISPLists} from './Helpers/SPHelpers'
-import { SPHttpClient, SPHttpClientResponse } from "@microsoft/sp-http";
 
 export interface IBbsCpaAllItemsWebPartProps {
   description: string;
@@ -27,7 +25,6 @@ export interface IBbsCpaAllItemsWebPartProps {
 export default class BbsCpaAllItemsWebPart extends BaseClientSideWebPart<IBbsCpaAllItemsWebPartProps> {
   private lists: IPropertyPaneDropdownOption[] = [];
   private islistdropdowndisabled: boolean = false;
-  private Helper: SPHelper;
 
   
   
@@ -56,52 +53,20 @@ export default class BbsCpaAllItemsWebPart extends BaseClientSideWebPart<IBbsCpa
     sp.setup({
       spfxContext: this.context,
     });
-    this.Helper = new SPHelper(this.context,this.properties.WebUrl)
     return Promise.resolve();
   }
-  public async _getListData(): Promise<ISPLists> {
-    let url =
-      !this.properties.WebUrl || this.properties.WebUrl == ""
-        ? this.context.pageContext.web.absoluteUrl
-        : this.properties.WebUrl;
-    return this.context.spHttpClient
-      .get(
-        url + `/_api/web/lists?$filter=BaseTemplate eq 100`,
-        SPHttpClient.configurations.v1
-      )
-      .then((response: SPHttpClientResponse) => {
-        return response.json();
-      });
-  }
-  public async getListItems(listId:string) : Promise< ISPListsItems> {
-
-    let url =  (!this.properties.WebUrl || this.properties.WebUrl=='' ) ? this.context.pageContext.web.absoluteUrl  : this.properties.WebUrl
-  url = url+ "/_api/Web/Lists(@v0)/Items?&@v0=guid'" + this.properties.listId +"'"
-    return this.context.spHttpClient.get(url, SPHttpClient.configurations.v1)
-      .then((response: SPHttpClientResponse) => {
-        return response.json();
-      });
-  }
-  // public async GetSites(url: string): Promise<string> {
-  //   const siteurl: string = await sp.site.getWebUrlFromPageUrl(url);
-  //   return siteurl;
-  // }
+ 
+ 
   protected async onPropertyPaneConfigurationStart() {
     this.lists = [];
-    let listOfLists = await (await this._getListData()).value;
+    let helpers : SPHelper = new SPHelper(this.context,this.properties.WebUrl)
+    let listOfLists = await (await helpers._getListData()).value;
     listOfLists.forEach((elem) => {
       this.lists.push({ key: elem.Id, text: elem.Title });
     });
     this.lists.length > 1
       ? (this.islistdropdowndisabled = false)
       : (this.islistdropdowndisabled = true);
-    this.properties.Items = this.properties.listId
-      ? (
-          await this.getListItems(
-            this.properties.listId
-          )
-        ).value
-      : new Array<IAllItems>();
 
     this.context.propertyPane.refresh();
     this.context.statusRenderer.clearLoadingIndicator(this.domElement);
@@ -109,37 +74,19 @@ export default class BbsCpaAllItemsWebPart extends BaseClientSideWebPart<IBbsCpa
   }
 
   protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): Promise<void> {
+    let helpers : SPHelper = new SPHelper(this.context,this.properties.WebUrl)
     if (propertyPath == "WebUrl") {
       this.lists = [];
-      let listOfLists = (await this._getListData()).value;
+      let listOfLists = (await helpers._getListData()).value;
       listOfLists.forEach((elem) => {
         this.lists.push({ key: elem.Id, text: elem.Title });
       });
       this.lists.length > 1
         ? (this.islistdropdowndisabled = false)
         : (this.islistdropdowndisabled = true);
-      this.properties.Items = this.properties.listId
-        ? (
-            await this.getListItems(
-              this.properties.listId
-            )
-          ).value
-        : new Array<IAllItems>();
       this.context.propertyPane.refresh();
       this.context.statusRenderer.clearLoadingIndicator(this.domElement);
       this.render();
-    }
-    if (propertyPath == "listId") {
-      this.properties.Items = this.properties.listId
-        ? (
-            await this.getListItems(
-              this.properties.listId
-            )
-          ).value
-        : new Array<IAllItems>();
-        this.context.propertyPane.refresh();
-    this.context.statusRenderer.clearLoadingIndicator(this.domElement);
-    this.render();
     }
   }
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
