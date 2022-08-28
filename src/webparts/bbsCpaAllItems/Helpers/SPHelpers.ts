@@ -38,7 +38,7 @@ export default class SPHelper {
   public async getListItems(listId:string) : Promise< ISPListsItems> {
 
     let url =  (!this.WebUrl || this.WebUrl=='' ) ? this.context.pageContext.web.absoluteUrl  : await this.WebUrl
-  url += "/_api/Web/Lists(@v0)/Items?&@v0=guid'" + listId +"'"
+  url += `/_api/Web/Lists(@v0)/Items?&@v0=guid'${listId}'&$filter=active ne true`
     return this.context.spHttpClient.get(url, SPHttpClient.configurations.v1)
       .then((response: SPHttpClientResponse) => {
         return response.json();
