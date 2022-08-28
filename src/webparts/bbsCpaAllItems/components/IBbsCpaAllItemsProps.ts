@@ -1,3 +1,7 @@
+
+/**
+ * Une interface définits les props react 
+ */
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { IAllItems } from "../Models/IAllItems";
 export interface IBbsCpaAllItemsProps {
